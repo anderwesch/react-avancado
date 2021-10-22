@@ -1,11 +1,16 @@
 import './App.css';
-import SignupForm from './components/SignupForm';
+import AppHeader from './components/AppHeader'
+import Container from '@mui/material/Container';
+
+import CreateMoviePage from './pages/CreateMoviePage'
 
 function App() {
   return (
-    <div className="App">
-      <br /><br />
-      <SignupForm />
+    <div>
+      <AppHeader />
+      <Container component="main">
+        <CreateMoviePage />
+      </Container>
     </div>
   );
 }
