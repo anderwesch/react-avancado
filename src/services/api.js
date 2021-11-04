@@ -23,6 +23,12 @@ export async function getMovies() {
   return response;
 }
 
+export async function deleteMovie(id) {
+  const response = await api.delete(`/movies/${id}`);
+  console.log("Delete Movie", response);
+  return response;
+}
+
 export async function authenticate(login, password) {
   const response = await api.post("/authenticate", {
     login: login,

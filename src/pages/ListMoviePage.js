@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import { DataGrid } from '@mui/x-data-grid';
 import Typography from '@mui/material/Typography';
 
-import { getMovies } from '../services/api';
+import { getMovies, deleteMovie } from '../services/api';
 
 const columns = [
   { field: "title", headerName: 'Titulo do Filme', width: 300 },
@@ -16,6 +17,7 @@ const columns = [
 
 function ListMoviePage () {
   const [rows, setRows] = useState([]);
+  const [rowsSelected, setRowsSelected] = useState([]);
 
   useEffect(() => {
     document.title = "Listar"
@@ -31,14 +33,28 @@ function ListMoviePage () {
     setRows(data);
   }
 
+  async function handleClickDelete() {
+    console.log(rowsSelected);
+    await deleteMovie(rowsSelected[0]);
+    await getMoviesFromApi();
+  }
+
   return (
     <Container component="main">
       <Box sx={{ mt: 5 }}>
         <Typography variant="h4" sx={{ mb: 5 }}>
           Filmes
         </Typography>
-        <div style={{ height: 600, width: '100%' }}>
-          <DataGrid columns={columns} rows={rows} checkboxSelection/>
+        <Button onClick={handleClickDelete} color="error" variant="contained">Deletar</Button>
+        <div style={{ height: 600, width: '100%', marginTop: 10 }}>
+          <DataGrid 
+            columns={columns} 
+            rows={rows} 
+            checkboxSelection
+            onSelectionModelChange={(selectionModel) => {
+              setRowsSelected(selectionModel);
+            }}
+          />
         </div>
       </Box>
     </Container>

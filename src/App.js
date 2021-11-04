@@ -7,12 +7,14 @@ import ListMoviePage from './pages/ListMoviePage'
 import UpdateMoviePage from './pages/UpdateMoviePage'
 import LoginPage from './pages/LoginPage'
 
-import { isAuthenticated } from './services/auth';
+import { useContext } from 'react';
+import { AuthContext } from './context/authContext';
 
 function App() {
+  const context = useContext(AuthContext);
   return (
     <BrowserRouter>
-      { isAuthenticated() ? <AppHeader /> : null }
+      { context.isAuthenticated ? <AppHeader /> : null }
       <Switch>
         <PrivateRoute exact path="/">
           <ListMoviePage />
@@ -35,9 +37,10 @@ function App() {
 }
 
 function PrivateRoute({ children, ...rest }) {
+  const context = useContext(AuthContext);
   return (
     <Route { ...rest }>
-      { isAuthenticated() ? children : <Redirect to="/login" /> }
+      { context.isAuthenticated ? children : <Redirect to="/login" /> }
     </Route>
   );
 }

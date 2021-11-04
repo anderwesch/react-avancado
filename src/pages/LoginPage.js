@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -6,18 +6,18 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useHistory } from "react-router-dom";
 
-import { authenticate } from '../services/api'
-import { isAuthenticated, login } from '../services/auth';
+import { AuthContext } from '../context/authContext';
 
 function LoginPage() {
   const [fields, setFields] = useState({ login: "", password: "" });
   const history = useHistory();
+  const context = useContext(AuthContext);
 
   useEffect(() => {
-    if(isAuthenticated()) {
+    if(context.isAuthenticated) {
       history.push("/");
     }
-  }, []);
+  }, [history]);
 
   function handleChange(event) {
     const fieldName = event.target.name;
@@ -27,9 +27,7 @@ function LoginPage() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const response = await authenticate(fields.login, fields.password);
-    if (response.status === 200 && response.data.auth === true) {
-      login(response.data.token);
+    if (await context.login(fields.login, fields.password)) {
       history.push("/");
     }
   }

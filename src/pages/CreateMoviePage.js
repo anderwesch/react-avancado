@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button'
-import { useLocation } from 'react-router-dom';
 
 import { createMovie } from '../services/api'
 
@@ -20,10 +19,8 @@ const movie = {
 function CreateMoviePage() {
 
   const [ fields, setFields ] = useState(movie);
-  const location = useLocation();
 
   useEffect(() => {
-    console.log("Teste", location);
     document.title = "Cadastrar"
   }, []);
 
